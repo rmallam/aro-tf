@@ -5,11 +5,15 @@ terraform plans for ARO
 
 az ad sp create-for-rbac --role="Owner" --name myServicePrincipal
 
-#this will output the appid/client id and the client secret that are required for authentication
+#this will output the appid/clientid and the client secret that are required for authentication
 
-#Get the object id of the service principal using the appid
+#Retrieve the objectid of the service principal using the appid(Appid is in the output of the above command)
 
-az ad sp show --id $appid | grep objectId
+az ad sp list --display-name `appid` --query '[].{objectid:objectId}'
+
+#get the resource provider object id for Red Hat OpenShift using the command below.
+
+az ad sp list --display-name "Azure Red Hat OpenShift RP" --query '[].{objectid:objectId}' --output table
 
 #Update the variables.tf file or pass these values at the time of execution.
 
