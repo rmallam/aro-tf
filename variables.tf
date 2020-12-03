@@ -36,7 +36,7 @@ variable "aro_client_secret" {
   description 		= "The Application Secret used by the Azure Red Hat OpenShift"
 }
 
-
+#az ad sp list --display-name "Azure Red Hat OpenShift RP" --query '[].{objectid:objectId}' --output table
 variable "aro_rp_object_id" {
   description 		= "The Resource Provider ID for Azure Red Hat OpenShift"
   default = "034dd685-b7a7-4924-b30b-b4bf8e6448d3"
