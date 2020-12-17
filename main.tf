@@ -106,3 +106,54 @@ resource "azurerm_template_deployment" "azure-arocluster" {
   ]
 }
 
+resource "azuread_application" "redirect-uri" {
+  name			= "aroclusterauthcalback"
+  reply_urls            = [azurerm_template_deployment.azure-arocluster.outputs["oauthCallbackURL"]]
+
+  depends_on = [
+    azurerm_template_deployment.azure-arocluster
+  ]
+}
+
+resource "null_resource" "azuread-connect" {
+  provisioner "local-exec" {
+    command 		= <<EOC
+      echo "POST-DEPLOY-CONNECT"
+      export ARO_NAME=${var.aro_name}
+      export ARO_RG=${var.aro_vnet_resource_group_name}
+      export CLIENT_ID=${var.aro_client_id}
+      export CLIENT_SECRET=${var.aro_client_secret}
+      export KUBE_PASSWORD=$(az aro list-credentials -n $ARO_NAME -g $ARO_RG --query kubeadminPassword -o tsv 2> /dev/null)
+      export API_SERVER=$(az aro show -n $ARO_NAME -g $ARO_RG --query apiserverProfile.url -o tsv 2> /dev/null )
+      export SECRET_NAME="openid-client-secret-azuread"
+      oc login $API_SERVER -u kubeadmin -p $KUBE_PASSWORD 2> /dev/null
+      oc delete secret $SECRET_NAME -n openshift-config 2> /dev/null
+      oc create secret generic $SECRET_NAME -n openshift-config --from-literal=clientSecret=$CLIENT_SECRET 2> /dev/null
+      export TENANT_ID=${data.azurerm_client_config.current.tenant_id}
+      ./azuread-connect.sh $TENANT_ID $CLIENT_ID $SECRET_NAME
+    EOC
+    interpreter 	= ["/bin/bash", "-c"]
+  }
+  
+  provisioner "local-exec" {
+    command 		= <<EOC
+      echo "POST-DEPLOY-SYNC"
+      ./azuread-sync.sh
+    EOC
+    interpreter 	= ["/bin/bash", "-c"]
+  }
+  
+  provisioner "local-exec" {
+    command 		= <<EOC
+      echo "Access Configured"
+      echo "POST-DEPLOY-CONSOLE"
+      WEB_CONSOLE=$(az aro show -n ${var.aro_name} -g ${var.aro_vnet_resource_group_name} --query consoleProfile.url -o tsv)
+      echo "You can accesss the Web Console following this url: $WEB_CONSOLE"
+    EOC
+    interpreter 	= ["/bin/bash", "-c"]
+  }
+
+  depends_on = [
+    azuread_application.redirect-uri
+  ]
+}

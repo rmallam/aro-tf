@@ -1,4 +1,5 @@
 variable "subscription" {
+    default = "7a892e27-76a0-484b-88e7-42e42bec195a"
 }
 
 variable "aro_name" {
@@ -25,18 +26,25 @@ variable "tags" {
 }
 
 variable "aro_client_object_id" {
+  default = "580bd913-d2e5-4520-9fdf-79bd9a733ece"
   description 		= "The Application ID used by the Azure Red Hat OpenShift"
 }
 
 variable "aro_client_id" {
+  default = "7f81b5cb-12aa-4054-b49a-e256da042a95"
   description 		= "The Application ID used by the Azure Red Hat OpenShift"
 }
 
 variable "aro_client_secret" {
+default = "uhhx7KQ1OWjKH.RudontQrw59cX0JYjcd9"
   description 		= "The Application Secret used by the Azure Red Hat OpenShift"
 }
 
-#az ad sp list --display-name "Azure Red Hat OpenShift RP" --query '[].{objectid:objectId}' --output table
+variable "aro_client_name" {
+  default = "rm-aro"
+}
+
+
 variable "aro_rp_object_id" {
   description 		= "The Resource Provider ID for Azure Red Hat OpenShift"
   default = "034dd685-b7a7-4924-b30b-b4bf8e6448d3"
