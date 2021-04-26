@@ -1,10 +1,14 @@
 variable "subscription" {
-    default = "7a892e27-76a0-484b-88e7-42e42bec195a"
+    default = "xxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx"
 }
 
 variable "aro_name" {
-  default = "rm-aro"
+  default = "rm-aro-1"
   description 		= "The Azure Red Hat OpenShift 4.x (ARO) name"
+}
+
+variable "aro_client_name" {
+  default = "rm-aro"
 }
 
 variable "aro_vnet_resource_group_name" {
@@ -25,29 +29,27 @@ variable "tags" {
   }
 }
 
-variable "aro_client_object_id" {
-  default = "580bd913-d2e5-4520-9fdf-79bd9a733ece"
-  description 		= "The Application ID used by the Azure Red Hat OpenShift"
-}
-
 variable "aro_client_id" {
-  default = "7f81b5cb-12aa-4054-b49a-e256da042a95"
-  description 		= "The Application ID used by the Azure Red Hat OpenShift"
+  default = "xxxxxx-xxxxx-xxxxxx-xxxxxx-xxxxxxx"
+  description 		= "The value from the variable appId when service princiapl was created"
 }
 
 variable "aro_client_secret" {
-default = "uhhx7KQ1OWjKH.RudontQrw59cX0JYjcd9"
-  description 		= "The Application Secret used by the Azure Red Hat OpenShift"
+default = "xxxx.xxxxx-xxxxxxxxx"
+  description 		= "The value from the variable password when service princiapl was created"
 }
 
-variable "aro_client_name" {
-  default = "rm-aro"
+#az ad sp list --display-name `NameprovidedtocreateSP` --query '[].{objectid:objectId}'
+variable "aro_client_object_id" {
+  default = "xxxx-xxxxx-xxxxx-xxxxx-xxxxxx"
+  description 		= "The value from the output of running the command in comments"
 }
 
-
+#Retrieve this value by using the command
+#az ad sp list --display-name "Azure Red Hat OpenShift RP" --query '[].{objectid:objectId}' --output table
 variable "aro_rp_object_id" {
   description 		= "The Resource Provider ID for Azure Red Hat OpenShift"
-  default = "034dd685-b7a7-4924-b30b-b4bf8e6448d3"
+  default = "xxxxx-xxxxx-xxxxx-xxxxx-xxxxxx"
 }
 
 variable "pull-secret" {
@@ -82,7 +84,7 @@ variable "aro_worker_node_disk_size" {
 }
 
 variable "aro_vnet_name" {
- default = "rm-aro-vnet"
+ default = "aro-vnet"
   description 		= "The name for ARO Virtual Network"
 }
 
