@@ -7,6 +7,8 @@
 
 # Terraform Module to create an ARO Cluster
 
+A HashiCorp Terraform module to create a Microsoft Azure Red Hat OpenShift (ARO) cluster.
+
 # PreRequisites
 
 - Azure account subscription
