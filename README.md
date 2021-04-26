@@ -1,10 +1,19 @@
 - [Terraform Module to create an ARO Cluster](#terraform-module-to-create-an-aro-cluster)
+- [PreRequisites](#prerequisites)
 - [Create a service principal](#create-a-service-principal)
 - [Retrieve ObjectId](#retrieve-objectid)
 - [Retrieve resource provider ID for Red Hat Openshift](#retrieve-resource-provider-id-for-red-hat-openshift)
 - [create ARO cluster](#create-aro-cluster)
 
 # Terraform Module to create an ARO Cluster
+
+# PreRequisites
+
+- Azure account subscription
+- Increase subscription quotas by raising a serive request (for this example: increase the Resources DSv3 Series to 50 and DSv4 Series to 50 for the region you chose)
+- Azure cli (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+- Terraform cli (https://www.terraform.io/downloads.html)
+- Pull Secret from RedHat (https://cloud.redhat.com/openshift/install/azure/installer-provisioned)
 
 # Create a service principal
 
@@ -82,4 +91,4 @@ Update the variables.tf file with the values retrieved above and run
 - terraform apply --auto-approve
 
 
-
+Author: Rakesh Kumar Mallam
